@@ -1,5 +1,5 @@
 git init -b main 
 git add . 
 git commit -m "Initial FastAPI CI project" 
-git remote add origin URL_DO_REPOSITORIO 
+git remote add origin "https://github.com/pedro2005ng/ficha06"
 git push -u origin main 
