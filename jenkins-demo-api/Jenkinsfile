@@ -32,14 +32,14 @@ pipeline {
                 sh ''' 
                     set -eu 
                     mkdir -p jenkins-demo-api/tests/reports 
-                    .venv/bin/python -m pytest -q \\ jenkins-demo-api/tests/reports/junit.xml 
+                    .venv/bin/python -m pytest -q jenkins-demo-api/tests --junitxml=jenkins-demo-api/tests/reports/junit.xml
                 ''' 
             } 
             post { 
                 always { 
                     script { 
-                        if (fileExists('reports/junit.xml')) { 
-                            junit testResults: 'reports/junit.xml' 
+                        if (fileExists('jenkins-demo-api/tests/reports/junit.xml')) {
+                            junit testResults: 'jenkins-demo-api/tests/reports/junit.xml'
                         } else { 
                             echo 'Relatório de testes indisponível' 
                         } 
