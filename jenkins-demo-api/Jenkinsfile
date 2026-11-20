@@ -29,11 +29,13 @@ pipeline {
  
         stage('Test') { 
             steps { 
-                sh ''' 
-                    set -eu 
-                    mkdir -p jenkins-demo-api/tests/reports 
-                    .venv/bin/python -m pytest -q jenkins-demo-api/tests --junitxml=jenkins-demo-api/tests/reports/junit.xml
-                ''' 
+                dir('jenkins-demo-api') {
+                    sh '''
+                        set -eu
+                        mkdir -p tests/reports
+                        PYTHONPATH=app ../.venv/bin/python -m pytest -q tests --junitxml=tests/reports/junit.xml
+                    '''
+                }
             } 
             post { 
                 always { 
