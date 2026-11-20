@@ -1,0 +1,52 @@
+services: 
+  jenkins: 
+    image: jenkins/jenkins:lts-jdk21 
+    container_name: jenkins-lab 
+    restart: unless-stopped 
+    ports: 
+      - "127.0.0.1:8080:8080" 
+    volumes: 
+      - jenkins_home:/var/jenkins_home 
+    networks:
+      - control 
+ 
+  ci-agent: 
+    build: 
+      context: . 
+      dockerfile: Dockerfile.agent 
+    container_name: jenkins-ci-agent 
+    init: true 
+    restart: unless-stopped 
+    environment: 
+      JENKINS_URL: http://jenkins:8080/ 
+      JENKINS_AGENT_NAME: ci-python-docker 
+      JENKINS_AGENT_WORKDIR: /home/jenkins/agent 
+      JENKINS_WEB_SOCKET: "true" 
+      JENKINS_SECRET: ${JENKINS_AGENT_SECRET:-} 
+      DOCKER_HOST: tcp://docker-engine:2375 
+    networks: 
+      - control 
+      - build 
+ 
+  docker-engine: 
+    image: docker:28-dind 
+    container_name: jenkins-docker-lab 
+    privileged: true 
+    profiles: 
+      - docker-build 
+    restart: unless-stopped 
+    environment: 
+      DOCKER_TLS_CERTDIR: "" 
+    expose: 
+      - "2375" 
+    volumes: 
+      - docker_engine_data:/var/lib/docker 
+    networks: 
+      - build 
+ 
+networks:
+  control: 
+  build: 
+volumes: 
+  jenkins_home: 
+  docker_engine_data:
