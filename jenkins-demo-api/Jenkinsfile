@@ -33,7 +33,7 @@ pipeline {
                     set -eu 
                     mkdir -p jenkins-demo-api/tests/reports 
                     .venv/bin/python -m pytest -q \\ 
-                        --junitxml=reports/junit.xml 
+                        --junitxml=jenkins-demo-api/tests/reports/junit.xml 
                 ''' 
             } 
             post { 
