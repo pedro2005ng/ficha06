@@ -31,7 +31,7 @@ pipeline {
             steps { 
                 sh ''' 
                     set -eu 
-                    mkdir -p reports 
+                    mkdir -p jenkins-demo-api/tests/reports 
                     .venv/bin/python -m pytest -q \\ 
                         --junitxml=reports/junit.xml 
                 ''' 
